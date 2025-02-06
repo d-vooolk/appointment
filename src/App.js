@@ -4,7 +4,6 @@ import axios from 'axios';
 
 function App() {
     const [form] = Form.useForm();
-    const {RangePicker} = DatePicker;
 
     const sendData = async (data) => {
         const url = 'https://prime-auto.by/send-application';
