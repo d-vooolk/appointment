@@ -1,9 +1,11 @@
 import './App.css';
 import {Button, Card, DatePicker, Form, Input} from "antd";
 import axios from 'axios';
+import {useState} from "react";
 
 function App() {
     const [form] = Form.useForm();
+    const [isHiddenForm, setIsHiddenForm] = useState(false);
 
     const sendData = async (data) => {
         const url = 'https://prime-auto.by/send-application';
@@ -25,32 +27,45 @@ function App() {
     return (
         <div className="App">
             <Card style={{width: '80%', margin: '100px auto'}}>
-                <div style={{padding: '20px', fontSize: '20px', fontWeight: 'bold'}}>
-                    Выберите период дат бронирования встречи с Дмитрием
-                </div>
+                {
+                    !isHiddenForm ? (
+                        <div>
+                            <div style={{padding: '20px', fontSize: '20px', fontWeight: 'bold'}}>
+                                Выберите период дат бронирования встречи с Дмитрием
+                            </div>
+                            <Form form={form}>
 
-                <Form form={form}>
-                    <Form.Item name="name" required>
-                        <Input
-                            placeholder="Введите ваше имя"
-                            style={{maxWidth: '200px'}}
-                        />
-                    </Form.Item>
-                    <Form.Item name="date" required>
-                        <DatePicker/>
-                    </Form.Item>
-                </Form>
+                                <Form.Item name="name" required>
+                                    <Input
+                                        placeholder="Введите ваше имя"
+                                        style={{maxWidth: '200px'}}
+                                    />
+                                </Form.Item>
+                                <Form.Item name="date" required>
+                                    <DatePicker/>
+                                </Form.Item>
+                            </Form>
+                            <Button type="primary"
 
-                <Button type="primary"
-                        onClick={() => sendData({
-                            name: form.getFieldsValue()?.name,
-                            date: form.getFieldsValue()?.date.toLocaleString(),
-                        })}>Отправить</Button>
-
-                <div style={{padding: '20px', fontSize: '10px'}}>
-                    Для девушек у которых имя заканчивается на "Дарья", а фамилия на "Войтехович", действует скидка 100%
-                    на все услуги.
-                </div>
+                                    onClick={() => {
+                                        sendData({
+                                        name: form.getFieldsValue()?.name,
+                                        date: form.getFieldsValue()?.date.toLocaleString(),
+                                    }).then(() => setIsHiddenForm(!isHiddenForm));
+                                    }}>Отправить</Button>
+                            <div style={{padding: '20px', fontSize: '10px'}}>
+                                Для девушек у которых имя заканчивается на "Дарья", а фамилия на "Войтехович", действует
+                                скидка
+                                100%
+                                на все услуги.
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{padding: '20px', fontSize: '20px', fontWeight: 'bold'}}>
+                            Спасибо, Дмитрий примет ваши пожелания к сведению и свяжется в ближайшее время.
+                        </div>
+                    )
+                }
             </Card>
         </div>
     );
