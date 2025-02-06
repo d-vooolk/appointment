@@ -38,7 +38,7 @@ function App() {
                         />
                     </Form.Item>
                     <Form.Item name="date" required>
-                        <RangePicker/>
+                        <DatePicker/>
                     </Form.Item>
                 </Form>
 
